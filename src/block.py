@@ -7,7 +7,7 @@ class Block:
         self.y = y
         self.side = side
         self.alive = isAlive
-        self.width = 2
+        self.width = 1
         self.id = (int(x/side),int(y/side))
         
     def spawn(self,screen,color):
@@ -20,7 +20,7 @@ class Block:
         self.width = 0
     def kill(self):
         self.alive = False
-        self.width = 2 
+        self.width = 1 
 if __name__ == "__main__":
     BLOCK_SIDE = 20
     SCREEN_WIDTH = SCREEN_HEIGHT = 400
