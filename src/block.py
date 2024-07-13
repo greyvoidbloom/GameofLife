@@ -65,10 +65,11 @@ if __name__ == "__main__":
                         #print(f"cell width = {player.width}")
             if event.type == pygame.FINGERDOWN:
                 touch_pos = event.x,event.y
-                if player.is_clicked(mouse_pos):
+                if player.is_clicked(touch_pos):
                         player.make_alive()
                         if player not in alive_players:
                             alive_players.append(player)
                 
         pygame.display.update()
     pygame.quit()
+    

@@ -1,7 +1,5 @@
 import pygame
 from block import Block
-
-
 global generation
 generation = 1
 def playground(screen_width,screen_height,block_side,population):
