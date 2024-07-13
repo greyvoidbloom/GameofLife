@@ -9,13 +9,14 @@ from GameLogic import *
 BLOCK_SIDE = 10
 SCREEN_WIDTH = SCREEN_HEIGHT = 800
 PANEL_HEIGHT = 200
-ALIVE_PLAYER_COLOR = (240,240,240)
+ALIVE_PLAYER_COLOR = (253, 93, 168)
 players = {}
 alive_players=[]
 neighbour_counter={}
 global auto_generation_propagation
 auto_generation_propagation = False
-
+global run
+run = True
 pygame.init()
 
 playground(screen_width=SCREEN_WIDTH,screen_height=SCREEN_HEIGHT,block_side=BLOCK_SIDE,population=players)
@@ -24,21 +25,19 @@ pygame.display.set_caption("Conway's game of life")
 clock = pygame.time.Clock()
 
 #DASHBOARD SETUP 
-quitBtn = ControlButton('./assets/quit.png',2,25)
-sinleGenPropBtn = ControlButton('./assets/manual_generation_propagation.png',2,25)
-autoGenPropBtn = ControlButton('./assets/auto_generation_propagation.png',2,25)
-global run
+quitBtn = ControlButton('./assets/quit.png',2,100)
+sinleGenPropBtn = ControlButton('./assets/manual_generation_propagation.png',2,100)
+autoGenPropBtn = ControlButton('./assets/auto_generation_propagation.png',2,100)
 
-run = True
 def quitSim():
     run = False
     sys.exit()
 while run:
     screen.fill('black')
     clock.tick(30)
-    quitBtn.spawn(screen=screen,x=10,y=SCREEN_HEIGHT+10)
-    sinleGenPropBtn.spawn(screen=screen,x=10,y=SCREEN_HEIGHT+50)
-    autoGenPropBtn.spawn(screen=screen, x= 60 , y= SCREEN_HEIGHT + 10)
+    quitBtn.spawn(screen=screen,x=50,y=SCREEN_HEIGHT+50)
+    sinleGenPropBtn.spawn(screen=screen,x=300,y=SCREEN_HEIGHT+50)
+    autoGenPropBtn.spawn(screen=screen, x= 550 , y= SCREEN_HEIGHT + 50)
         
 
     for player in players.values():
@@ -67,10 +66,16 @@ while run:
                                         block_side=BLOCK_SIDE)   
             if event.key == pygame.K_RETURN:
                 auto_generation_propagation = not auto_generation_propagation
+            if event.key == pygame.K_c:
+                
+                cleanSlate(players=players)
+                alive_players = []
+                neighbour_counter={}
+                
+                print("board cleared!")
         if event.type == pygame.MOUSEBUTTONDOWN:
             mouse_pos = pygame.mouse.get_pos()
             if sinleGenPropBtn.isClicked(mouse_pos=mouse_pos):
-                print('next gen')
                 game_logic_compacted(alive_players=alive_players,
                                         players=players,
                                         neighbour_counter=neighbour_counter,
@@ -78,7 +83,6 @@ while run:
                                         screen_height=SCREEN_HEIGHT,
                                         block_side=BLOCK_SIDE) 
             if quitBtn.isClicked(mouse_pos=mouse_pos):
-                print('quit button clicked')
                 quitSim()
             if autoGenPropBtn.isClicked(mouse_pos=mouse_pos):
                 auto_generation_propagation = not auto_generation_propagation 

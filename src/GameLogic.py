@@ -73,3 +73,9 @@ def game_logic_compacted(alive_players,players,neighbour_counter,screen_width,sc
                                 neighbourlist= neighbour_counter)
     generation+=1
     print(f"generation: {generation} and alive players: {len(new_members)}")
+
+def cleanSlate(players):
+    for player in players.values():
+        player.kill()
+    global generation
+    generation = 1
