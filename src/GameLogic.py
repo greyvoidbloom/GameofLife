@@ -1,4 +1,4 @@
-import pygame
+import json
 from block import Block
 global generation
 generation = 1
@@ -79,3 +79,30 @@ def cleanSlate(players):
         player.kill()
     global generation
     generation = 1
+def save_to_file(savefile,alive_players,players,block_side):
+    save_info = {}
+    j = 0
+    new_members = update_alive(alive_players,players)
+    for i in new_members:
+        if i.alive == True:
+            save_info[j] = (i.x/block_side,i.y/block_side)
+            j+=1
+    with open(savefile, "w") as outfile:
+        json.dump(save_info, outfile)
+        
+def load_data(savefile,players,block_size,alive_players,population):
+    cleanSlate(players=players)
+    with open(savefile) as readfile:
+        read_data = json.load(readfile)
+        j = 0
+        for i in players.values():
+            try:
+                if (i.x/block_size == read_data[str(j)][0] and i.y/block_size == read_data[str(j)][1]):
+                    #print(f"{j}:{read_data[str(j)]} should be alive")
+                    i.make_alive() 
+                    j+=1
+            except KeyError:
+                break
+        update_alive(alive_players,population)
+                
+            

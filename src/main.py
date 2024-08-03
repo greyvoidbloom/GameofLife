@@ -1,9 +1,8 @@
 import pygame
 import sys
 import time
-from dashboard import DashBoard
 from GameButtons import ControlButton
-from block import Block
+
 from GameLogic import *
 
 BLOCK_SIDE = 10
@@ -30,6 +29,7 @@ sinleGenPropBtn = ControlButton('./assets/manual_generation_propagation.png',2,1
 autoGenPropBtn = ControlButton('./assets/auto_generation_propagation.png',2,100)
 
 def quitSim():
+    print("Quitting program ...")
     run = False
     sys.exit()
 while run:
@@ -57,22 +57,29 @@ while run:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_q:
                 quitSim()
-            if event.key == pygame.K_SPACE:
+            elif event.key == pygame.K_SPACE:
                 game_logic_compacted(alive_players=alive_players,
                                         players=players,
                                         neighbour_counter=neighbour_counter,
                                         screen_width=SCREEN_WIDTH,
                                         screen_height=SCREEN_HEIGHT,
                                         block_side=BLOCK_SIDE)   
-            if event.key == pygame.K_RETURN:
+            elif event.key == pygame.K_RETURN:
                 auto_generation_propagation = not auto_generation_propagation
-            if event.key == pygame.K_c:
-                
+            elif event.key == pygame.K_c:
                 cleanSlate(players=players)
                 alive_players = []
                 neighbour_counter={}
-                
                 print("board cleared!")
+            elif event.key == pygame.K_s and pygame.key.get_mods() & pygame.KMOD_CTRL:
+                print("saving to file ...")
+                save_to_file(savefile="saved.json",alive_players=alive_players,players=players,block_side=BLOCK_SIDE)
+            elif event.key == pygame.K_l and pygame.key.get_mods() & pygame.KMOD_CTRL:
+                print("loading data ...")
+                alive_players = []
+                neighbour_counter={}
+                load_data(savefile="saved.json",players=players,block_size=BLOCK_SIDE,alive_players=alive_players,population=players)
+
         if event.type == pygame.MOUSEBUTTONDOWN:
             mouse_pos = pygame.mouse.get_pos()
             if sinleGenPropBtn.isClicked(mouse_pos=mouse_pos):
